@@ -40,6 +40,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteUserById")
+    @ResponseBody
     public boolean deleteUserById(@RequestParam long userId){
         return userService.deleteUserById(userId);
     }

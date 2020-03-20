@@ -3,6 +3,7 @@ package com.example.diet.model;
 import com.example.diet.Other.RoleEnum;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,7 +18,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "iduser")
     private Integer iduser;
 
@@ -52,7 +54,7 @@ public class User {
     @Column(name = "roleName")
     @ManyToMany
     @JoinColumn(name = "roleName")
-    private Set<Role> roleName;
+    private Set<Role> roles;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "")
     private List<Delegarion> delegarion;

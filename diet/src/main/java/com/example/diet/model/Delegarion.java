@@ -4,6 +4,7 @@ import com.example.diet.Other.AutoCapacity;
 import com.example.diet.Other.TransportType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -54,7 +55,7 @@ public class Delegarion {
 
     @Column(name = "autoCapacity")
     @Enumerated(EnumType.STRING)
-    private Integer autoCapacity;
+    private AutoCapacity autoCapacity;
 
     @Column(name = "km")
     private Float km;
