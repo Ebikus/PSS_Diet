@@ -51,8 +51,7 @@ public class User {
     private Date registrationDate = new Date();
 
 
-    @Column(name = "roleName")
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "roleName")
     private Set<Role> roles;
 

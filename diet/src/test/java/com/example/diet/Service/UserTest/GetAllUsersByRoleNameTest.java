@@ -1,4 +1,4 @@
-package com.example.diet.Service.UserTest;
+package com.example.diet;
 
 import com.example.diet.Other.RoleEnum;
 import com.example.diet.model.Role;
@@ -9,10 +9,12 @@ import com.example.diet.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@ComponentScan({"com.example.diet.service"})
 public class GetAllUsersByRoleNameTest {
 
     @Autowired
@@ -39,75 +42,72 @@ public class GetAllUsersByRoleNameTest {
     List<User> createdUsersWithRoleUSER;
 
     @Before
-    public void setUp() {
-        Set<Role> USERRoles = new HashSet<>();
-        Set<Role> ADMINRoles = new HashSet<>();
-
-        Role userRole = new Role();
-        userRole.setRoleName(RoleEnum.USER);
-        Role adminRole = new Role();
-        adminRole.setRoleName(RoleEnum.ADMIN);
-        USERRoles.add(userRole);
-        ADMINRoles.add(adminRole);
-
-        entityManager.persist(adminRole);
-        entityManager.persist(userRole);
-        entityManager.flush();
-
+    public void setUp(){
         createdUsersWithRoleUSER = new ArrayList<>();
 
+        Role user = testRoleRepository.save(new Role(RoleEnum.USER));
+        Role admin = testRoleRepository.save(new Role(RoleEnum.ADMIN));
+
+        Set<Role> userRole = new HashSet<Role>();
+        userRole.add(user);
+        Set<Role> adminRole = new HashSet<Role>();
+        adminRole.add(admin);
+        Set<Role> userAdminRole = new HashSet<Role>();
+        userAdminRole.add(user);
+        userAdminRole.add(admin);
+
         User testUser1 = new User(
-                "Nazwa Firmy",
-                "Adresowa 69",
-                "123456789",
-                "Krystian",
-                "Bursztynski",
-                "xd@xd.xd",
-                "haselo123");
-        testUser1.setRoles(ADMINRoles);
+                "xD1",
+                "xD1",
+                "1231231231",
+                "Sebek1",
+                "xD1",
+                "xD@xD.xD1",
+                "omegalul1");
+        testUser1.setRoles(userRole);
+        testUser1 = testUserService.registerUser(testUser1);
+
         User testUser2 = new User(
-                "Nazwa Firmy2",
-                "Adresowa 96",
-                "123456789",
-                "Sebastian",
-                "Kemnitz",
-                "xd2@xd.xd",
-                "haselo123");
-        testUser2.setRoles(ADMINRoles);
-        User testUser3 =new User(
-                "Nazwa Firmy3",
-                "Uliczna 69",
-                "123456789",
-                "Kebastian",
-                "Semnitz",
-                "xd3@xd.xd",
-                "haselo123");
-        testUser3.setRoles(USERRoles);
-        User testUser4 =new User(
-                "Nazwa Firmy4",
-                "Uliczna 96",
-                "123456789",
-                "Brystian",
-                "Kursztyński",
-                "xd4@xd.xd",
-                "haselo123");
-        testUser4.setRoles(USERRoles);
+                "xD2",
+                "xD2",
+                "1231231232",
+                "Sebek2",
+                "xD2",
+                "xD@xD.xD2",
+                "omegalul2");
+        testUser2.setRoles(adminRole);
+        testUser2 = testUserService.registerUser(testUser2);
 
+        User testUser3 = new User(
+                "xD3",
+                "xD3",
+                "1231231233",
+                "Sebek3",
+                "xD3",
+                "xD@xD.xD3",
+                "omegalul3");
+        testUser3.setRoles(userAdminRole);
+        testUser3 = testUserService.registerUser(testUser3);
+
+        User testUser4 = new User(
+                "xD4",
+                "xD4",
+                "1231231234",
+                "Sebek4",
+                "xD4",
+                "xD@xD.xD4",
+                "omegalul4");
+        testUser4 = testUserService.registerUser(testUser4);
+
+        createdUsersWithRoleUSER.add(testUser1);
         createdUsersWithRoleUSER.add(testUser3);
-        createdUsersWithRoleUSER.add(testUser4);
 
-        entityManager.persist(testUser1);
-        entityManager.persist(testUser2);
-        entityManager.persist(testUser3);
-        entityManager.persist(testUser4);
-        entityManager.flush();
     }
 
     @Test
-    public void getAllUsersByRoleName() {
+    public void getAllUsersByRoleName(){
         List<User> usersWithUserRole = testUserService.getAllUsersByRoleName("USER");
-        Assert.assertEquals(createdUsersWithRoleUSER, usersWithUserRole);
+
+        Assertions.assertEquals(usersWithUserRole, createdUsersWithRoleUSER);
     }
 }
-
-

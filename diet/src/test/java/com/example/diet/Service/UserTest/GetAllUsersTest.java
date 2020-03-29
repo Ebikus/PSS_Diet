@@ -1,4 +1,4 @@
-package com.example.diet.Service.UserTest;
+package com.example.diet;
 
 import com.example.diet.model.User;
 import com.example.diet.repository.UserRepository;
@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@ComponentScan({"com.example.diet.service"})
 public class GetAllUsersTest {
 
     @Autowired
@@ -31,59 +33,50 @@ public class GetAllUsersTest {
     private List<User> expectedUsers;
 
     @Before
-    public void setUp() {
+    public void setUp(){
         expectedUsers = new ArrayList<>();
 
         User testUser1 = new User(
-                "Nazwa Firmy",
-                "Adresowa 69",
-                "123456789",
-                "Krystian",
-                "Bursztynski",
-                "xd@xd.xd",
-                "haselo123");
+                "xD1",
+                "xD1",
+                "1231231231",
+                "Sebek1",
+                "xD1",
+                "xD@xD.xD1",
+                "omegalul1");
+
         User testUser2 = new User(
-                "Nazwa Firmy2",
-                "Adresowa 96",
-                "123456789",
-                "Sebastian",
-                "Kemnitz",
-                "xd2@xd.xd",
-                "haselo123");
-        User testUser3 =new User(
-                "Nazwa Firmy3",
-                "Uliczna 69",
-                "123456789",
-                "Kebastian",
-                "Semnitz",
-                "xd3@xd.xd",
-                "haselo123");
-        User testUser4 =new User(
-                "Nazwa Firmy4",
-                "Uliczna 96",
-                "123456789",
-                "Brystian",
-                "Kursztyński",
-                "xd4@xd.xd",
-                "haselo123");
+                "xD2",
+                "xD2",
+                "1231231232",
+                "Sebek2",
+                "xD2",
+                "xD@xD.xD2",
+                "omegalul2");
+
+        User testUser3 = new User(
+                "xD3",
+                "xD3",
+                "1231231233",
+                "Sebek3",
+                "xD3",
+                "xD@xD.xD3",
+                "omegalul3");
 
         expectedUsers.add(testUser1);
         expectedUsers.add(testUser2);
         expectedUsers.add(testUser3);
-        expectedUsers.add(testUser4);
 
         entityManager.persist(testUser1);
         entityManager.persist(testUser2);
         entityManager.persist(testUser3);
-        entityManager.persist(testUser4);
         entityManager.flush();
     }
 
     @Test
-    public void getAllUsers() {
+    public void getAllUsers(){
         List<User> allUsersInDatabase = testUserService.getAllUsers();
 
         Assertions.assertThat(allUsersInDatabase).isEqualTo(expectedUsers);
     }
-
 }

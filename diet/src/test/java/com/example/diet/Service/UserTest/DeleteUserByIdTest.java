@@ -1,4 +1,4 @@
-package com.example.diet.Service.UserTest;
+package com.example.diet;
 
 import com.example.diet.model.User;
 import com.example.diet.repository.UserRepository;
@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@ComponentScan({"com.example.diet.service"})
 public class DeleteUserByIdTest {
 
     @Autowired
@@ -28,28 +30,29 @@ public class DeleteUserByIdTest {
     @Autowired
     private UserService testUserService;
 
-    private List<User> expectedUsers = new ArrayList<>();
+    private List<User> expectedUsers;
 
     @Before
-    public void setUp() {
+    public void setUp(){
         expectedUsers = new ArrayList<>();
 
         User testUser1 = new User(
-                "Nazwa Firmy",
-                "Adresowa 69",
-                "123456789",
-                "Krystian",
-                "Bursztynski",
-                "xd@xd.xd",
-                "haselo123");
+                "xD1",
+                "xD1",
+                "1231231231",
+                "Sebek1",
+                "xD1",
+                "xD@xD.xD1",
+                "omegalul1");
+
         User testUser2 = new User(
-                "Nazwa Firmy2",
-                "Adresowa 96",
-                "123456789",
-                "Sebastian",
-                "Kemnitz",
-                "xd2@xd.xd",
-                "haselo123");
+                "xD2",
+                "xD2",
+                "1231231232",
+                "Sebek2",
+                "xD2",
+                "xD@xD.xD2",
+                "omegalul2");
 
         entityManager.persist(testUser1);
         entityManager.persist(testUser2);
@@ -62,10 +65,9 @@ public class DeleteUserByIdTest {
     }
 
     @Test
-    public void deleteUserById() {
+    public void deleteUserById(){
         List<User> allUsersInDatabase = testUserService.getAllUsers();
 
         Assertions.assertThat(allUsersInDatabase).isEqualTo(expectedUsers);
     }
-
 }

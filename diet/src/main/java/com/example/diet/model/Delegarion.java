@@ -4,7 +4,6 @@ import com.example.diet.Other.AutoCapacity;
 import com.example.diet.Other.TransportType;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ import java.util.Set;
 public class Delegarion {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @Column(name = "iddelegation")
     private Integer iddelegation;
 
