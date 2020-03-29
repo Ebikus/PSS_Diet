@@ -4,9 +4,12 @@ import com.example.diet.Other.AutoCapacity;
 import com.example.diet.Other.TransportType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -24,13 +27,15 @@ public class Delegarion {
     private String description;
 
     @Column(name = "dataTimeStart", nullable = false)
-    private LocalDate dateTimeStrat;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateTimeStrat;
 
     @Column(name = "dataTimeStop", nullable = false)
-    private LocalDate dataTimeStop;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dataTimeStop;
 
     @Column(name = "travelDietAmount")
-    private Integer travelDietAmount = 0;
+    private Integer travelDietAmount = 30;
 
     @Column(name = "breakfastNumber")
     private Integer breakfastNumber = 0;
@@ -43,7 +48,6 @@ public class Delegarion {
 
     @Column(name = "transportType")
     @Enumerated(EnumType.STRING)
-    //dorobić enum od typu transportu
     private TransportType transportType;
 
     @Column(name = "ticketPrice")
@@ -67,5 +71,13 @@ public class Delegarion {
 
     @Column(name = "otherOutlayPrice")
     private Float otherOutlayPrice;
+
+    public Delegarion(){}
+
+    public Delegarion(Integer iddelegation, String description, Date dateTimeStrat){
+        this.iddelegation = iddelegation;
+        this.description = description;
+        this.dateTimeStrat = dateTimeStrat;
+    }
 
 }

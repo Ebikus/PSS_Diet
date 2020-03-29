@@ -3,10 +3,12 @@ package com.example.diet.model;
 import com.example.diet.Other.RoleEnum;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,7 +18,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "iduser")
     private Integer iduser;
 
@@ -42,17 +45,29 @@ public class User {
     private String password;
 
     @Column(name = "status")
-    private Integer status = 1;
+    private Boolean status = true;
 
     @Column(name = "registrationDate")
-    private LocalDate registrationDate = LocalDate.now();
+    private Date registrationDate = new Date();
 
 
     @Column(name = "roleName")
     @ManyToMany
-    private Set<Role> roleName;
+    @JoinColumn(name = "roleName")
+    private Set<Role> roles;
 
-    @OneToOne
-    @JoinColumn(name = "iddelegation")
-    private Delegarion delegarion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "")
+    private List<Delegarion> delegarion;
+
+    public User(){}
+
+    public User(String companyName, String companyAddress, String companyNip, String name, String lastName, String email, String password){
+        this.companyName = companyName;
+        this.companyAddress = companyAddress;
+        this.companyNip = companyNip;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 }
