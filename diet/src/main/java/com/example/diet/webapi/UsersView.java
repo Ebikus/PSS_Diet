@@ -10,10 +10,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route("Users")
+
 @CssImport("./shared-styles.css")
+@Route(value="users", layout = MainView.class)
+@PageTitle("Users | DIET APP")
 public class UsersView extends VerticalLayout {
     private UserService userService;
     private Grid<User> grid = new Grid<>(User.class);

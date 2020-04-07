@@ -1,0 +1,12 @@
+com\example\diet\GetAllDelegationsByUserOrderByDateStartDescTest.class
+com\example\diet\GetAllDelegationsOrderByDateStartDescTest.class
+com\example\diet\ChangePasswordTest.class
+com\example\diet\GetAllUsersTest.class
+com\example\diet\GetAllUsersByRoleNameTest.class
+com\example\diet\RemoveDelegation.class
+com\example\diet\DietApplicationTests.class
+com\example\diet\GetAllDelegationTest.class
+com\example\diet\DeleteUserByIdTest.class
+com\example\diet\RegisterUserTest.class
+com\example\diet\ChangeDelegationTest.class
+com\example\diet\AddDelegationTest.class
