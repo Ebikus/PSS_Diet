@@ -47,6 +47,7 @@ public class GetAllDelegationsByUserOrderByDateStartDescTest {
     @Before
     public void setUp(){
         User testUser = new User(
+                1,
                 "xD",
                 "xD",
                 "123123123",

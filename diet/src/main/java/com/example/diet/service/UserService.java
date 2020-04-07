@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class UserService {
@@ -46,5 +48,11 @@ public class UserService {
         }else{
             return false;
         }
+    }
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }

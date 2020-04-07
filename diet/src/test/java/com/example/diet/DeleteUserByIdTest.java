@@ -37,6 +37,7 @@ public class DeleteUserByIdTest {
         expectedUsers = new ArrayList<>();
 
         User testUser1 = new User(
+                1,
                 "xD1",
                 "xD1",
                 "1231231231",
@@ -46,6 +47,7 @@ public class DeleteUserByIdTest {
                 "omegalul1");
 
         User testUser2 = new User(
+                2,
                 "xD2",
                 "xD2",
                 "1231231232",

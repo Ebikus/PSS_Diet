@@ -57,6 +57,7 @@ public class GetAllUsersByRoleNameTest {
         userAdminRole.add(admin);
 
         User testUser1 = new User(
+                1,
                 "xD1",
                 "xD1",
                 "1231231231",
@@ -68,6 +69,7 @@ public class GetAllUsersByRoleNameTest {
         testUser1 = testUserService.registerUser(testUser1);
 
         User testUser2 = new User(
+                2,
                 "xD2",
                 "xD2",
                 "1231231232",
@@ -79,6 +81,7 @@ public class GetAllUsersByRoleNameTest {
         testUser2 = testUserService.registerUser(testUser2);
 
         User testUser3 = new User(
+                3,
                 "xD3",
                 "xD3",
                 "1231231233",
@@ -90,6 +93,7 @@ public class GetAllUsersByRoleNameTest {
         testUser3 = testUserService.registerUser(testUser3);
 
         User testUser4 = new User(
+                4,
                 "xD4",
                 "xD4",
                 "1231231234",

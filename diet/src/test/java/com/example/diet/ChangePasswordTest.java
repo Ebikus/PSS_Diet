@@ -32,6 +32,7 @@ public class ChangePasswordTest {
     @Before
     public void setUp(){
         testUser = new User(
+                1,
                 "xD",
                 "xD",
                 "123123123",

@@ -19,8 +19,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
+    //@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    //@GenericGenerator(name = "native", strategy = "native")
     @Column(name = "iduser")
     private Integer iduser;
 
@@ -63,7 +63,8 @@ public class User {
         delegarion = new ArrayList<>();
     }
 
-    public User(String companyName, String companyAddress, String companyNip, String name, String lastName, String email, String password){
+    public User(Integer iduser, String companyName, String companyAddress, String companyNip, String name, String lastName, String email, String password){
+        this.iduser = iduser;
         this.companyName = companyName;
         this.companyAddress = companyAddress;
         this.companyNip = companyNip;

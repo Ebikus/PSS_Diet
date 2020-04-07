@@ -33,6 +33,7 @@ public class RegisterUserTest {
     @Test
     public void registerUser(){
         User testUser = new User(
+                1,
                 "xD",
                 "xD",
                 "123123123",
