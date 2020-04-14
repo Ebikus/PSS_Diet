@@ -35,15 +35,15 @@ public class MainView extends AppLayout {
 
     private void createDrawer() {
         RouterLink userLink = new RouterLink("Users", UsersView.class);
-        RouterLink loginLink = new RouterLink("Login", LoginView.class);
+       // RouterLink loginLink = new RouterLink("Login", LoginView.class);
         RouterLink mainLink = new RouterLink("MainView(delete later)", MainPage.class);
-        RouterLink registerLink = new RouterLink("Registration", RegistrationView.class);
+       // RouterLink registerLink = new RouterLink("Registration", RegistrationView.class);
         RouterLink delegationLink = new RouterLink("Delegation", DelegationView.class);
         delegationLink.setHighlightCondition(HighlightConditions.sameLocation());
-        loginLink.setHighlightCondition(HighlightConditions.sameLocation());
+       // loginLink.setHighlightCondition(HighlightConditions.sameLocation());
         userLink.setHighlightCondition(HighlightConditions.sameLocation());
-        registerLink.setHighlightCondition(HighlightConditions.sameLocation());
+        //registerLink.setHighlightCondition(HighlightConditions.sameLocation());
         mainLink.setHighlightCondition(HighlightConditions.sameLocation());
-        addToDrawer(new VerticalLayout(userLink, mainLink,loginLink,registerLink,delegationLink));
+        addToDrawer(new VerticalLayout(userLink, mainLink,delegationLink));
     }
 }

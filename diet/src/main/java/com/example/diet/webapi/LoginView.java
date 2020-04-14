@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 import java.util.Collections;
 
 @CssImport("./shared-styles.css")
-@Route(value="login", layout = MainView.class)
+@Route(value="login")
 @PageTitle("Login | DIET APP")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
@@ -26,7 +26,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         login.setAction("login");
-        add(new H1("Login | Super Apka"), login, anchor);
+        add(new H1("Login | DIET APP"), login, anchor);
     }
 
     @Override
