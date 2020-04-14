@@ -16,7 +16,7 @@ import com.vaadin.flow.shared.Registration;
 
 
 public class UserForm extends FormLayout {
-
+    private IntegerField iduser = new IntegerField("ID");
     private PasswordField password = new PasswordField("New Password");
     private TextField name = new TextField("Name");
     private TextField lastName = new TextField("Last Name");
@@ -31,7 +31,7 @@ public class UserForm extends FormLayout {
     BeanValidationBinder<User> binder = new BeanValidationBinder<>(User.class);
 
     public UserForm(){
-
+        binder.forField(iduser).bind("iduser");
         binder.forField(password).bind("password");
         binder.forField(name).bind("name");
         binder.forField(lastName).bind("lastName");
@@ -42,7 +42,7 @@ public class UserForm extends FormLayout {
         binder.setBean(new User());
 
         addClassName("user-form");
-        add(
+        add(iduser,
                 password,
                 name,
                 lastName,

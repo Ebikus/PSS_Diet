@@ -23,6 +23,7 @@ public class UsersView extends VerticalLayout {
 
     private final UserForm form;
     private User user;
+    private Label userID=new Label();
     private Label userName = new Label();
     private Label userLastName = new Label();
     private Label userEmail = new Label();
@@ -44,11 +45,12 @@ public class UsersView extends VerticalLayout {
         form.addListener(UserForm.ModifyEvent.class, this::modifyUser);
         form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
         modifyUser.addClickListener(actionEvent -> form.setVisible(true));
-        Div content = new Div(new VerticalLayout(userName, userLastName, userEmail, userCompanyName, userCompanyAddress, userCompanyNIP, modifyUser), form);
+        Div content = new Div(new VerticalLayout(userID, userName, userLastName, userEmail, userCompanyName, userCompanyAddress, userCompanyNIP, modifyUser), form);
         add(content);
     }
 
     private void initializeFields() {
+        userID.setText("ID: "+user.getIduser());
         userName.setText("Name: " + user.getName());
         userLastName.setText("Last Name: " + user.getLastName());
         userEmail.setText("Email: " + user.getEmail());

@@ -53,4 +53,7 @@ public class UserService {
     public User finndUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
+    public User modifyUser(long userId, User userNew){
+        return userRepository.save(userNew);
+    }
 }
