@@ -17,6 +17,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String LOGIN_PROCESSING_URL = "/login";
+    private static final String LOGIN_FAILURE_URL = "/login?error";
+    private static final String LOGIN_URL = "/login";
+    private static final String LOGOUT_SUCCESS_URL = "/login";
+
     @Qualifier("userDetailsServiceImpl")
     @Autowired
     public UserDetailsService userDetailsService;
@@ -28,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .antMatchers("/rest/delegation/addDelegation").hasAnyRole("ADMIN","USER")
                 .antMatchers("/rest/delegation/removeDelegation").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/rest/delegation/changeDelegation").hasAnyRole("ADMIN", "USER")
@@ -41,9 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/user/getAllUsersByRole").hasRole("ADMIN")
                 .antMatchers("/rest/user/deleteUserById").hasRole("ADMIN")
                 .antMatchers("/swagger-ui.html/**").hasRole("ADMIN")
-                .and().formLogin()
+                .and().formLogin().loginPage(LOGIN_URL).loginProcessingUrl(LOGIN_PROCESSING_URL)
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
 
     @Bean

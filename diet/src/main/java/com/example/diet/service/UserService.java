@@ -5,9 +5,7 @@ import com.example.diet.model.Role;
 import com.example.diet.model.User;
 import com.example.diet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -46,5 +44,13 @@ public class UserService {
         }else{
             return false;
         }
+    }
+
+    public void delete(User user){
+        userRepository.delete(user);
+    }
+
+    public User finndUserByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }

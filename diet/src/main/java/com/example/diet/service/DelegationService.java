@@ -6,12 +6,14 @@ import com.example.diet.repository.DelegationRepository;
 import com.example.diet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class DelegationService {
 
     @Autowired
@@ -32,16 +34,19 @@ public class DelegationService {
             return userRepository.save(user);
         });
     }
-
+    @Transactional
     public boolean removeDelegation(long userId, long delegationId){
-        boolean userExist = userRepository.findAll().removeIf(user -> user.getIduser() == (int)userId);
-        boolean delegationExist = delegationRepository.findAll().removeIf(user -> user.getIddelegation() == (int)delegationId);
-        if(userExist&&delegationExist){
+        boolean userExists = userRepository.findById((int) userId).isPresent();
+        boolean delegationExists = delegationRepository.findById((int) delegationId).isPresent();
+        if(userExists && delegationExists) {
+            User user = userRepository.getOne((int) userId);
+            user.getDelegarion().remove(delegationRepository.getOne((int) delegationId));
+            userRepository.save(user);
             delegationRepository.deleteById((int) delegationId);
             return true;
-        }else{
-            return false;
         }
+        return false;
+
     }
 
     public void changeDelegation(long delegationId, Delegarion delegarion){
