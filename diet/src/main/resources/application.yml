@@ -1,10 +1,23 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/diet4?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/diet?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: root
+    password: password
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 761742879560-ch093e94rj6gq9kpo4tsu224cnni7j4e.apps.googleusercontent.com
+            client-secret: 4WtuIcrwu_jCmeg2T8xGEPYgpsstest0000@gmail.com
+          github:
+            client-id: 591a7ab726eb60dbc5eb
+            client-secret: d4fb9a2ea8179838e40b076922b96a6b58fd8ba2
+vaadin:
+  productionMode: false
+  compatibilityMode: true
