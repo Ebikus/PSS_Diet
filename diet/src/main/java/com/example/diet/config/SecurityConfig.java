@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/user/deleteUserById").hasRole("ADMIN")
                 .antMatchers("/swagger-ui.html/**").hasRole("ADMIN")
                 .and().formLogin().loginPage(LOGIN_URL).loginProcessingUrl(LOGIN_PROCESSING_URL)
+                .and().oauth2Login().loginPage(LOGIN_URL)
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
