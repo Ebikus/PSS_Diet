@@ -5,7 +5,12 @@ import com.example.diet.model.Role;
 import com.example.diet.model.User;
 import com.example.diet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -36,6 +41,20 @@ public class UserService {
         });
     }
 
+    public void makeAdmin(long userId){
+        userRepository.findById((int)userId).map(user1 -> {
+            user1.setRoles(new HashSet<>(Arrays.asList(new Role(RoleEnum.ADMIN))));
+            return userRepository.save(user1);
+        });
+    }
+
+    public void makeUser(long userId){
+        userRepository.findById((int)userId).map(user1 -> {
+            user1.setRoles(new HashSet<>(Arrays.asList(new Role(RoleEnum.USER))));
+            return userRepository.save(user1);
+        });
+    }
+
     public boolean deleteUserById(long userId){
         boolean exist = userRepository.findAll().removeIf(user -> user.getIduser() == (int)userId);
         if(exist){
@@ -53,7 +72,5 @@ public class UserService {
     public User finndUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
-    public User modifyUser(long userId, User userNew){
-        return userRepository.save(userNew);
-    }
+
 }

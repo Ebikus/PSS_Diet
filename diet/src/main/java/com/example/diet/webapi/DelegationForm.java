@@ -1,5 +1,6 @@
 package com.example.diet.webapi;
 
+import com.example.diet.Other.AutoCapacity;
 import com.example.diet.Other.TransportType;
 import com.example.diet.model.Delegarion;
 import com.vaadin.flow.component.Component;
@@ -28,7 +29,7 @@ public class DelegationForm extends FormLayout {
     private TextField dinnerNumber = new TextField("Dinner Number");
     private TextField supperNumber = new TextField("Breakfast Number");
     private TextField ticketPrice = new TextField("Ticket Price");
-    private TextField autoCapacity = new TextField("Auto Capacity");
+    //private TextField autoCapacity = new TextField("Auto Capacity");
     private TextField km = new TextField("Km");
     private TextField accomodationPrice = new TextField("Accommodation Price");
     private TextField otherTicketsPrice = new TextField("Other Tickets Price");
@@ -37,6 +38,7 @@ public class DelegationForm extends FormLayout {
     private DatePicker dateTimeStrat = new DatePicker("Date Start");
     private DatePicker dataTimeStop= new DatePicker("Date End");
     private ComboBox<TransportType> transportType = new ComboBox<>("Transport type");
+    private ComboBox<AutoCapacity> autoCapacity = new ComboBox<>("Auto Capacity");
 
     private Button save = new Button("Save");
     private Button delete = new Button("Delete");
@@ -52,7 +54,7 @@ public class DelegationForm extends FormLayout {
         binder.forField(dinnerNumber).withConverter(new StringToIntegerConverter("Enter a number")).bind(Delegarion::getDinnerNumber, Delegarion::setDinnerNumber);
         binder.forField(supperNumber).withConverter(new StringToIntegerConverter("Enter a number")).bind(Delegarion::getSupperNumber, Delegarion::setSupperNumber);
         binder.forField(ticketPrice).withNullRepresentation("").withConverter(new StringToFloatConverter("Enter a number")).bind(Delegarion::getTicketPrice, Delegarion::setTicketPrice);
-        binder.forField(autoCapacity).withNullRepresentation("").withConverter(new StringToIntegerConverter("Enter a number")).bind(Delegarion::getAutoCapacity, Delegarion::setAutoCapacity);
+        //binder.forField(autoCapacity).withNullRepresentation("").withConverter(new StringToIntegerConverter("Enter a number")).bind(Delegarion::getAutoCapacity, Delegarion::setAutoCapacity);
         binder.forField(km).withNullRepresentation("").withConverter(new StringToFloatConverter("Enter a number")).bind(Delegarion::getKm, Delegarion::setKm);
         binder.forField(accomodationPrice).withNullRepresentation("").withConverter(new StringToFloatConverter("Enter a number")).bind(Delegarion::getAccomodationPrice, Delegarion::setAccomodationPrice);
         binder.forField(otherTicketsPrice).withNullRepresentation("").withConverter(new StringToFloatConverter("Enter a number")).bind(Delegarion::getOtherTicketsPrice, Delegarion::setOtherTicketsPrice);
@@ -61,9 +63,11 @@ public class DelegationForm extends FormLayout {
         binder.forField(dateTimeStrat).withConverter(new LocalDateToDateConverter(ZoneId.systemDefault())).bind("dateTimeStrat");
         binder.forField(dataTimeStop).withConverter(new LocalDateToDateConverter(ZoneId.systemDefault())).bind("dataTimeStop");
         binder.forField(transportType).bind(Delegarion::getTransportType, Delegarion::setTransportType);
+        binder.forField(autoCapacity).bind(Delegarion::getAutoCapacity, Delegarion::setAutoCapacity);
         binder.setBean(new Delegarion());
 
         transportType.setItems(TransportType.values());
+        autoCapacity.setItems(AutoCapacity.values());
 
         addClassName("delegation-form");
 

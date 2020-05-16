@@ -3,117 +3,65 @@ package com.example.diet.webapi;
 import com.example.diet.model.User;
 import com.example.diet.service.UserService;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.stream.Collectors;
-
-@CssImport("./shared-styles.css")
-@Route(value="register", layout = MainView.class)
-@PageTitle("Registration | DIET APP")
+@Route("register")
+@PageTitle("Register | Super Apka")
 public class RegistrationView extends VerticalLayout {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    public RegistrationView(){
+    FormLayout formLayout = new FormLayout();
+    IntegerField iduser = new IntegerField("Id User");
+    TextField name = new TextField("Name");
+    TextField lastName = new TextField("Last Name");
+    TextField email = new TextField("E-Mail");
+    PasswordField password = new PasswordField("Password");
+    TextField companyName = new TextField("Company Name");
+    TextField companyAddress = new TextField("Company Address");
+    TextField companyNip = new TextField("Company Nip");
+
+    Button registerButton = new Button("Register");
+
+
+    public RegistrationView(UserService userService){
+        this.userService = userService;
         addClassName("register-view");
         setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        add(new H1("Registration | DIET APP"),buildForm());
+        formLayout.add(iduser, name, lastName, email, password, companyName, companyAddress, companyNip, createButtonLayout());
+        add(new H1("Register | Super Apka"), formLayout);
     }
 
-    private Component buildForm(){
-        TextField name = new TextField("Name");
-        TextField lastName = new TextField("Last Name");
-        EmailField email = new EmailField("Email");
-        PasswordField password = new PasswordField("Password");
-        TextField companyName = new TextField("Company Name");
-        TextField companyAddress = new TextField("Company Address");
-        TextField companyNip = new TextField("Company NIP");
-        Label label = new Label("This email is already taken");
-        label.setVisible(false);
-
-        Button registerButton = new Button("Register");
-        Button clearForm = new Button("Clear");
-        HorizontalLayout buttons = new HorizontalLayout(registerButton, clearForm);
+    private Component createButtonLayout(){
         registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        Div errorLayout = new Div();
 
-        VerticalLayout formLayout = new VerticalLayout(name,lastName,email,password,companyName,companyAddress,companyNip,label,buttons);
-        Div wrapperLayout = new Div(formLayout, errorLayout);
-        formLayout.setDefaultHorizontalComponentAlignment(Alignment.BASELINE);
-        errorLayout.setWidthFull();
-        wrapperLayout.setHeight("80%");
+        registerButton.addClickListener(buttonClickEvent -> saveUser());
 
-        BeanValidationBinder<User> binder = new BeanValidationBinder<>(User.class);
-        binder.forField(name).bind("name");
-        binder.forField(lastName).bind("lastName");
-        binder.forField(email).withValidator(new EmailValidator("This doesn't look like a valid email address"))
-                .asRequired("email is required").bind(User::getEmail, User::setEmail);
-        binder.forField(password).bind("password");
-        binder.forField(companyName).bind("companyName");
-        binder.forField(companyAddress).bind("companyAddress");
-        binder.forField(companyNip).bind("companyNip");
-        binder.setBean(new User());
-
-        registerButton.setEnabled(false);
-        binder.addStatusChangeListener(status -> {
-                    registerButton.setEnabled(!status.hasValidationErrors() && !binder.getFields().anyMatch(HasValue::isEmpty));
-                    label.setVisible(false);
-                }
-        );
-
-        registerButton.addClickListener(click -> {
-            try {
-                errorLayout.setText("");
-                User user = new User();
-                binder.writeBean(user);
-                if(userService.finndUserByEmail(user.getEmail()) == null){
-                    userService.registerUser(user);
-                    UI.getCurrent().navigate("login");
-                }else{
-                    label.setVisible(true);
-                }
-
-            } catch (ValidationException e) {
-                errorLayout.add(new Html(e.getValidationErrors().stream()
-                        .map(res -> "<p>" + res.getErrorMessage() + "</p>")
-                        .collect(Collectors.joining("\n"))));
-            }
-        });
-
-        clearForm.addClickListener(click -> {
-            name.setValue("");
-            lastName.setValue("");
-            email.setValue("");
-            password.setValue("");
-            companyName.setValue("");
-            companyAddress.setValue("");
-            companyNip.setValue("");
-            binder.removeBean();
-        });
-
-        return wrapperLayout;
+        return new HorizontalLayout(registerButton);
     }
-
+    private void saveUser(){
+        User user = new User();
+        user.setIduser(iduser.getValue());
+        user.setName(name.getValue());
+        user.setLastName(lastName.getValue());
+        user.setEmail(email.getValue());
+        user.setPassword(password.getValue());
+        user.setCompanyName(companyName.getValue());
+        user.setCompanyAddress(companyAddress.getValue());
+        user.setCompanyNip(companyNip.getValue());
+        userService.registerUser(user);
+    }
 }

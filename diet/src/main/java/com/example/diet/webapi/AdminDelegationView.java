@@ -7,22 +7,28 @@ import com.example.diet.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Date;
 
 @CssImport("./shared-styles.css")
-@Route(value="delegation", layout = MainView.class)
+@Route(value="adminDelegation", layout = MainView.class)
 @PageTitle("Delegation | Super Apka")
-public class DelegationView extends VerticalLayout {
+public class AdminDelegationView extends VerticalLayout {
     @Autowired
     DelegationService delegationService;
     @Autowired
@@ -32,7 +38,7 @@ public class DelegationView extends VerticalLayout {
     private final DelegationForm form;
     private Grid<Delegarion> grid = new Grid<>(Delegarion.class);
 
-    public DelegationView(DelegationService delegationService, UserService userService){
+    public AdminDelegationView(DelegationService delegationService, UserService userService){
         this.delegationService = delegationService;
         this.userService = userService;
         user = userService.finndUserByEmail(currentUser());
@@ -51,6 +57,7 @@ public class DelegationView extends VerticalLayout {
         content.addClassName("content");
         content.setSizeFull();
 
+
         add(getToolBar(),content);
         updateList();
         closeEditor();
@@ -58,9 +65,26 @@ public class DelegationView extends VerticalLayout {
 
     private HorizontalLayout getToolBar() {
         Button addDelegationButton = new Button("Add Delegation", click -> addDelegation());
-        HorizontalLayout toolbar = new HorizontalLayout(addDelegationButton);
+        StreamResource res = new StreamResource("file.pdf", () -> new ByteArrayInputStream("sebek".getBytes()));
+
+        Anchor generatePDF = new Anchor(res,"");
+        generatePDF.getElement().setAttribute("download", true);
+        generatePDF.add(new Button("Download PDF" ,new Icon(VaadinIcon.DOWNLOAD_ALT)));
+        HorizontalLayout toolbar = new HorizontalLayout(addDelegationButton, generatePDF);
         return toolbar;
     }
+
+    /*private InputStream getInputStream(){
+        try{
+            StringWriter stringWriter = new StringWriter();
+
+            CsvW
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }*/
 
     private void configureGrid(){
         grid.addClassName("grid");
@@ -119,9 +143,7 @@ public class DelegationView extends VerticalLayout {
     }
 
     private void updateList(){
-        if(delegationService.getAllByUserId(user.getIduser()) != null){
-            grid.setItems(delegationService.getAllByUserId(user.getIduser()));
-        }
+        grid.setItems(delegationService.getAllDelegation());
     }
 
     public String currentUser(){

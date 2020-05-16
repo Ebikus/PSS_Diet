@@ -1,12 +1,15 @@
 package com.example.diet.model;
 
+import com.example.diet.Other.AutoCapacity;
 import com.example.diet.Other.TransportType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "Delegation")
@@ -50,7 +53,8 @@ public class Delegarion {
     private Float ticketPrice;
 
     @Column(name = "autoCapacity")
-    private Integer autoCapacity;
+    @Enumerated(EnumType.STRING)
+    private AutoCapacity autoCapacity;
 
     @Column(name = "km")
     private Float km;
@@ -70,6 +74,7 @@ public class Delegarion {
     public Delegarion(){}
 
     public Delegarion(String description, Date dateTimeStrat, Date dataTimeStop){
+        //this.iddelegation = iddelegation;
         this.description = description;
         this.dateTimeStrat = dateTimeStrat;
         this.dataTimeStop = dataTimeStop;

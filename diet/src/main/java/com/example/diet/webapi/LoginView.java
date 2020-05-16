@@ -1,6 +1,6 @@
 package com.example.diet.webapi;
 
-import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -12,15 +12,14 @@ import com.vaadin.flow.router.Route;
 
 import java.util.Collections;
 
-@CssImport("./shared-styles.css")
-@Route(value="login")
-@PageTitle("Login | DIET APP")
+@Route("login")
+@PageTitle("Login | Super Apka")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private LoginForm login = new LoginForm();
     Anchor anchor = new Anchor("/register", "Nie masz konta? ZAREJESTRUJ SIE");
     Anchor google = new Anchor("/oauth2/authorization/google", "Zaloguj się przez Google");
-	Anchor github = new Anchor("/oauth2/authorization/github", "Zalohuj się przez GitHub");
+    Anchor github = new Anchor("/oauth2/authorization/github", "Zalohuj się przez GitHub");
 
     public LoginView(){
         addClassName("login-view");
@@ -28,7 +27,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         login.setAction("login");
-        add(new H1("Login | DIET APP"), login, anchor, google, github);
+        add(new H1("Login | Super Apka"), login, anchor,google,github);
     }
 
     @Override

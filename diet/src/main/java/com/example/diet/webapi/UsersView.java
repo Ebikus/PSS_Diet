@@ -4,12 +4,14 @@ import com.example.diet.model.User;
 import com.example.diet.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -18,49 +20,42 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Route(value="users", layout = MainView.class)
 @PageTitle("Users | DIET APP")
 public class UsersView extends VerticalLayout {
-    @Autowired
-    UserService userService;
-
-    private final UserForm form;
+    private UserService userService;
+    private Grid<User> grid = new Grid<>(User.class);
+    private TextField filterText = new TextField();
+    private UserForm form;
     private User user;
-    private Label userID=new Label();
-    private Label userName = new Label();
-    private Label userLastName = new Label();
-    private Label userEmail = new Label();
-    private Label userCompanyName = new Label();
-    private Label userCompanyAddress = new Label();
-    private Label userCompanyNIP = new Label();
-    private Button modifyUser = new Button("Modify user");
 
-    public UsersView(UserService userService){
+    public UsersView(UserService userService) {
         this.userService = userService;
-        addClassName("userData-view");
-        setSizeFull();
-
         user = userService.finndUserByEmail(currentUser());
-        initializeFields();
-
+        addClassName("list-view");
+        setSizeFull();
+        configureGrid();
         form = new UserForm();
-        form.setVisible(false);
-        form.addListener(UserForm.ModifyEvent.class, this::modifyUser);
+        form.addListener(UserForm.SaveEvent.class, this::saveUser);
+        form.addListener(UserForm.DeleteEvent.class, this::deleteUser);
         form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
-        modifyUser.addClickListener(actionEvent -> form.setVisible(true));
-        Div content = new Div(new VerticalLayout(userID, userName, userLastName, userEmail, userCompanyName, userCompanyAddress, userCompanyNIP, modifyUser), form);
-        add(content);
+        form.addListener(UserForm.MakeAdminEvent.class, this::makeAdmin);
+        form.addListener(UserForm.MakeUserEvent.class, this::makeUser);
+        closeEditor();
+        Div content = new Div(grid, form);
+        content.addClassName("content");
+        content.setSizeFull();
+        add(getToolbar(), content);
+        updateList();
+
     }
 
-    private void initializeFields() {
-        userID.setText("ID: "+user.getIduser());
-        userName.setText("Name: " + user.getName());
-        userLastName.setText("Last Name: " + user.getLastName());
-        userEmail.setText("Email: " + user.getEmail());
-        userCompanyName.setText("Company Name: " + user.getCompanyName());
-        userCompanyAddress.setText("Company Address: " + user.getCompanyAddress());
-        userCompanyNIP.setText("Company Nip: " + user.getCompanyNip());
+    private void saveUser(UserForm.SaveEvent event) {
+        userService.registerUser(event.getUser());
+        updateList();
+        closeEditor();
     }
-
-    private void modifyUser(UserForm.ModifyEvent usr){
-        userService.registerUser(usr.getUser());
+    private void deleteUser(UserForm.DeleteEvent event) {
+        userService.delete(event.getUser());
+        updateList();
+        closeEditor();
     }
 
     private void closeEditor() {
@@ -69,10 +64,62 @@ public class UsersView extends VerticalLayout {
         removeClassName("editing");
     }
 
+    private void configureGrid() {
+        grid.addClassName("user-grid");
+        grid.setSizeFull();
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.setColumns("iduser", "name", "lastName", "email","companyName","companyAddress", "status", "registrationDate");
+        grid.asSingleSelect().addValueChangeListener(event ->
+                editUser(event.getValue()));
+    }
+
+    private void editUser(User user) {
+        if (user == null) {
+            closeEditor();
+        } else {
+            form.setUser(user);
+            form.setVisible(true);
+            addClassName("editing");
+        }
+    }
+
+    private void updateList() {
+        grid.setItems(userService.getAllUsers());
+    }
+    private HorizontalLayout getToolbar() {
+        filterText.setPlaceholder("Filter by name...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+
+        Button addContactButton = new Button("Add contact");
+        addContactButton.addClickListener(click -> addUser());
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton);
+        toolbar.addClassName("toolbar");
+        return toolbar;
+    }
+
+    void addUser() {
+        grid.asSingleSelect().clear();
+        editUser(new User());
+    }
+
+    private void makeAdmin(UserForm.MakeAdminEvent user){
+        userService.makeAdmin(user.getUser().getIduser());
+        updateList();
+        closeEditor();
+    }
+
+    private void makeUser(UserForm.MakeUserEvent user){
+        userService.makeUser(user.getUser().getIduser());
+        updateList();
+        closeEditor();
+    }
+
     public String currentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentName = authentication.getName();
         return currentName;
     }
-
 }
